@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:src="@drawable/FBU_Horizontal_Logo_White"
+        android:src="@drawable/fbu_horizontal_logo_white"
         android:background="@color/fbu_purple"
         android:adjustViewBounds="true"/>
 
@@ -28,28 +28,28 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="8dp"
-            android:src="@drawable/Cafe_Button"/>
+            android:src="@drawable/cafe_button"/>
 
         <ImageView
             android:id="@+id/btn_exam"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="8dp"
-            android:src="@drawable/Exam_Button"/>
+            android:src="@drawable/exam_button"/>
 
         <ImageView
             android:id="@+id/btn_event"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="8dp"
-            android:src="@drawable/Event_Button"/>
+            android:src="@drawable/event_button"/>
 
         <ImageView
             android:id="@+id/btn_alert"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="8dp"
-            android:src="@drawable/Alert_Button"/>
+            android:src="@drawable/alert_button"/>
     </GridLayout>
 
 </RelativeLayout>

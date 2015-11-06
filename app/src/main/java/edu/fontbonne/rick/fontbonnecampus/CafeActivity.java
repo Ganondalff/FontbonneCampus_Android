@@ -28,12 +28,13 @@ public class CafeActivity extends AppCompatActivity {
         String[] menu = new String[7];
         try
         {
-            URL url = new URL("http://url.com/number.xml");
+            /*URL url = new URL("http://url.com/number.xml");
             connection = (HttpURLConnection)url.openConnection();
             InputStream is = connection.getInputStream();
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document xmlDoc = documentBuilder.parse(is);
-            week = Integer.getInteger(xmlDoc.getElementsByTagName("weeknumber").item(0).getTextContent());
+            week = Integer.getInteger(xmlDoc.getElementsByTagName("weeknumber").item(0).getTextContent());*/
+            week = 1;
         }
         catch (Exception e)
         {
