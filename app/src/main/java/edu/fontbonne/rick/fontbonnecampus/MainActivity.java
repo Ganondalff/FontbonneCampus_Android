@@ -16,12 +16,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageView cafeImageView = (ImageView) findViewById(R.id.btn_cafe);
+        ImageView examImageView = (ImageView) findViewById(R.id.btn_exam);
 
         cafeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent cafeIntent = new Intent(getApplicationContext(), CafeActivity.class);
                 startActivity(cafeIntent);
+            }
+        });
+
+        examImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent examIntent = new Intent(getApplicationContext(), ExamActivity.class);
+                startActivity(examIntent);
             }
         });
     }
