@@ -1,7 +1,10 @@
 package edu.fontbonne.rick.fontbonnecampus;
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TableLayout;
@@ -66,7 +69,17 @@ public class ExamActivity extends AppCompatActivity {
                     {
                         TextView examCol = new TextView(getApplicationContext());
                         examCol.setText(result.get(i)[j]);
-                        examCol.setTextColor(Color.BLACK);
+
+                        if (i == 0)
+                        {
+                            examCol.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.fbu_purple));
+                            examCol.setTypeface(null, Typeface.BOLD);
+                            examCol.setTextSize(17);
+                        }
+                        else
+                            examCol.setTextColor(Color.BLACK);
+
+                        examCol.setPadding(dpToPx(3), dpToPx(3), dpToPx(3), dpToPx(3));
                         examRow.addView(examCol);
                     }
 
@@ -78,5 +91,10 @@ public class ExamActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static int dpToPx(int dp)
+    {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 }
