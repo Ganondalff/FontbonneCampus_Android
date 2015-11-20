@@ -1,6 +1,7 @@
 package edu.fontbonne.rick.fontbonnecampus;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,11 +9,17 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,7 +65,7 @@ public class CafeActivity extends AppCompatActivity {
 
             try
             {
-                URL url = new URL("http://url.com/menu" + 1 + ".xml");
+                URL url = new URL("http://www.primetechconsult.com/fontbonnecampusapp/menu" + 1 + ".xml");
                 connection = (HttpURLConnection)url.openConnection();
                 InputStream is = connection.getInputStream();
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -78,18 +85,39 @@ public class CafeActivity extends AppCompatActivity {
 
         protected void onPostExecute(Document result) {
 
-            String[] menu = new String[7];
+            String[] menu = new String[15];
 
-            NodeList days = result.getElementsByTagName("menu").item(0).getChildNodes();
-            for (int i = 0; i < days.getLength(); i++)
+            ArrayList<Node> days = new ArrayList<>();
+            NodeList menuNodes = result.getElementsByTagName("menu").item(0).getChildNodes();
+            for(int a = 0; a < menuNodes.getLength(); a++)
             {
-                NodeList meals = days.item(i).getChildNodes();
-                for (int j = 0; j < meals.getLength(); j++)
+                if(menuNodes.item(a).getNodeType() == Node.ELEMENT_NODE)
+                    days.add(menuNodes.item(a));
+            }
+            for (int i = 0; i < days.size(); i++)
+            {
+                ArrayList<Node> meals = new ArrayList<>();
+                NodeList daysNodes = days.get(i).getChildNodes();
+                for(int b = 0; b < daysNodes.getLength(); b++)
                 {
-                    NodeList dishes = meals.item(j).getChildNodes();
-                    for (int k = 0; k < dishes.getLength(); k++)
+                    if(daysNodes.item(b).getNodeType() == Node.ELEMENT_NODE)
+                        meals.add(daysNodes.item(b));
+                }
+                for (int j = 0; j < meals.size(); j++)
+                {
+                    ArrayList<Node> dishes = new ArrayList<>();
+                    NodeList mealsNodes = meals.get(j).getChildNodes();
+                    for(int c = 0; c < mealsNodes.getLength(); c++)
                     {
-                        menu[i] = menu[i] + "\n" + dishes.item(k).getTextContent();
+                        if(mealsNodes.item(c).getNodeType() == Node.ELEMENT_NODE)
+                            dishes.add(mealsNodes.item(c));
+                    }
+                    for (int k = 0; k < dishes.size(); k++)
+                    {
+                        if (menu[(i*3)+j] != null)
+                            menu[(i*3)+j] = menu[(i*3)+j] + "\n" + dishes.get(k).getTextContent();
+                        else
+                            menu[(i*3)+j] = dishes.get(k).getTextContent();
                     }
                 }
             }
@@ -101,6 +129,14 @@ public class CafeActivity extends AppCompatActivity {
             TextView menuText5 = (TextView) findViewById(R.id.menuText5);
             TextView menuText6 = (TextView) findViewById(R.id.menuText6);
             TextView menuText7 = (TextView) findViewById(R.id.menuText7);
+            TextView menuText8 = (TextView) findViewById(R.id.menuText8);
+            TextView menuText9 = (TextView) findViewById(R.id.menuText9);
+            TextView menuText10 = (TextView) findViewById(R.id.menuText10);
+            TextView menuText11 = (TextView) findViewById(R.id.menuText11);
+            TextView menuText12 = (TextView) findViewById(R.id.menuText12);
+            TextView menuText13 = (TextView) findViewById(R.id.menuText13);
+            TextView menuText14 = (TextView) findViewById(R.id.menuText14);
+            TextView menuText15 = (TextView) findViewById(R.id.menuText15);
 
             menuText1.setText(menu[0]);
             menuText2.setText(menu[1]);
@@ -109,6 +145,14 @@ public class CafeActivity extends AppCompatActivity {
             menuText5.setText(menu[4]);
             menuText6.setText(menu[5]);
             menuText7.setText(menu[6]);
+            menuText8.setText(menu[7]);
+            menuText9.setText(menu[8]);
+            menuText10.setText(menu[9]);
+            menuText11.setText(menu[10]);
+            menuText12.setText(menu[11]);
+            menuText13.setText(menu[12]);
+            menuText14.setText(menu[13]);
+            menuText15.setText(menu[14]);
         }
     }
 }
