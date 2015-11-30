@@ -1,7 +1,6 @@
 package edu.fontbonne.rick.fontbonnecampus;
 
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,14 +11,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,16 +55,39 @@ public class CafeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class ConnectTask extends AsyncTask<Void, Void, Document>
+    class ConnectTask extends AsyncTask<Void, Void, Pair<Document, Date>>
     {
-        protected Document doInBackground(Void... arg0)
+        protected Pair<Document, Date> doInBackground(Void... arg0)
         {
             HttpURLConnection connection = null;
             Document xmlDoc = null;
+            String weekNumber = null;
+            Date weekStartDate = null;
 
             try
             {
-                URL url = new URL("http://www.primetechconsult.com/fontbonnecampusapp/menu" + 1 + ".xml");
+                URL url = new URL("http://www.primetechconsult.com/fontbonnecampusapp/weeknumber.txt");
+                connection = (HttpURLConnection)url.openConnection();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                weekNumber = reader.readLine();
+                SimpleDateFormat weekDateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+                weekStartDate = weekDateFormatter.parse(reader.readLine());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.disconnect();
+            }
+
+            connection = null;
+
+            try
+            {
+                URL url = new URL("http://www.primetechconsult.com/fontbonnecampusapp/menu" + weekNumber + ".xml");
                 connection = (HttpURLConnection)url.openConnection();
                 InputStream is = connection.getInputStream();
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -80,15 +102,18 @@ public class CafeActivity extends AppCompatActivity {
                 if (connection != null)
                     connection.disconnect();
             }
-            return xmlDoc;
+
+            Pair menuPair = new Pair(xmlDoc, weekStartDate);
+
+            return menuPair;
         }
 
-        protected void onPostExecute(Document result) {
+        protected void onPostExecute(Pair<Document, Date> result) {
 
             String[] menu = new String[15];
 
             ArrayList<Node> days = new ArrayList<>();
-            NodeList menuNodes = result.getElementsByTagName("menu").item(0).getChildNodes();
+            NodeList menuNodes = result.a.getElementsByTagName("menu").item(0).getChildNodes();
             for(int a = 0; a < menuNodes.getLength(); a++)
             {
                 if(menuNodes.item(a).getNodeType() == Node.ELEMENT_NODE)
@@ -122,6 +147,8 @@ public class CafeActivity extends AppCompatActivity {
                 }
             }
 
+            TextView menuTitle = (TextView) findViewById(R.id.menuTitle);
+
             TextView menuText1 = (TextView) findViewById(R.id.menuText1);
             TextView menuText2 = (TextView) findViewById(R.id.menuText2);
             TextView menuText3 = (TextView) findViewById(R.id.menuText3);
@@ -138,6 +165,10 @@ public class CafeActivity extends AppCompatActivity {
             TextView menuText14 = (TextView) findViewById(R.id.menuText14);
             TextView menuText15 = (TextView) findViewById(R.id.menuText15);
 
+            SimpleDateFormat resultFormatter = new SimpleDateFormat("MMM dd, yyyy");
+
+            menuTitle.setText("Menu for Week of\n    " + resultFormatter.format(result.b));
+
             menuText1.setText(menu[0]);
             menuText2.setText(menu[1]);
             menuText3.setText(menu[2]);
@@ -153,6 +184,18 @@ public class CafeActivity extends AppCompatActivity {
             menuText13.setText(menu[12]);
             menuText14.setText(menu[13]);
             menuText15.setText(menu[14]);
+        }
+    }
+
+    public class Pair<A,B>
+    {
+        public final A a;
+        public final B b;
+
+        public Pair(A a, B b)
+        {
+            this.a = a;
+            this.b = b;
         }
     }
 }

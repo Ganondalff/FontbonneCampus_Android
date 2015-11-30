@@ -14,6 +14,14 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/menuTitle"
+        android:text="Menu for Week of"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
         android:text="@string/monday"
         android:textSize="22sp"
         android:textStyle="bold"
