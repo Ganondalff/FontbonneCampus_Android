@@ -87,7 +87,7 @@ public class CafeActivity extends AppCompatActivity {
 
             try
             {
-                URL url = new URL("http://www.primetechconsult.com/fontbonnecampusapp/menu" + weekNumber + ".xml");
+                URL url = new URL("http://www.primetechconsult.com/fontbonnecampusapp/menu" + (Integer.parseInt(weekNumber) % 5) + ".xml");
                 connection = (HttpURLConnection)url.openConnection();
                 InputStream is = connection.getInputStream();
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
